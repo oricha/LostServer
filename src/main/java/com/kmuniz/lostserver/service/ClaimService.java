@@ -29,9 +29,16 @@ public class ClaimService {
 
 
     public void claimItem(Long id) {
-        LostItemEntity item = lostItemRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Item not found"));
-        // Logic for processing the claim (e.g., mark it as claimed)
-        item.setQuantity(item.getQuantity() - 1); // Reduce the quantity
+        LostItemEntity item = lostItemRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Item not found"));
+
+        // Check if there are enough items to claim
+        if (item.getQuantity() <= 0) {
+            throw new IllegalStateException("There are not enough items to claim.");
+        }
+
+        // Reduce the quantity
+        item.setQuantity(item.getQuantity() - 1);
         lostItemRepository.save(item);
     }
 }

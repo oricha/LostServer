@@ -25,8 +25,15 @@ public class ClaimController {
 
     // Endpoint to process a claim
     @PostMapping("/claims/{id}/claim")
-    public String claimItem(@PathVariable Long id) {
-        claimService.claimItem(id);
+    public String claimItem(@PathVariable Long id, Model model) {
+        try {
+            claimService.claimItem(id);
+            model.addAttribute("message", "Item claimed successfully!");
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+        } catch (IllegalStateException e) {
+            model.addAttribute("error", e.getMessage());
+        }
         return "redirect:/items";
     }
 }
