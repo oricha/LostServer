@@ -1,31 +1,78 @@
-# Getting Started
+# How to Upload a File Using Postman
 
-### Reference Documentation
-For further reference, please consider the following sections:
+## 1. Open Postman
+- Open the Postman application on your system.
 
-* [Official Gradle documentation](https://docs.gradle.org)
-* [Spring Boot Gradle Plugin Reference Guide](https://docs.spring.io/spring-boot/3.4.1/gradle-plugin)
-* [Create an OCI image](https://docs.spring.io/spring-boot/3.4.1/gradle-plugin/packaging-oci-image.html)
-* [Spring Web](https://docs.spring.io/spring-boot/3.4.1/reference/web/servlet.html)
-* [Spring Data JPA](https://docs.spring.io/spring-boot/3.4.1/reference/data/sql.html#data.sql.jpa-and-spring-data)
-* [Spring Boot Actuator](https://docs.spring.io/spring-boot/3.4.1/reference/actuator/index.html)
-* [Spring Boot DevTools](https://docs.spring.io/spring-boot/3.4.1/reference/using/devtools.html)
-* [Rest Repositories](https://docs.spring.io/spring-boot/3.4.1/how-to/data-access.html#howto.data-access.exposing-spring-data-repositories-as-rest)
+---
 
-### Guides
-The following guides illustrate how to use some features concretely:
+## 2. Create a New Request
+1. Click **"New"** → **"Request"**.
+2. Name your request and save it in a collection if needed.
 
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/rest/)
-* [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
-* [Building a RESTful Web Service with Spring Boot Actuator](https://spring.io/guides/gs/actuator-service/)
-* [Accessing JPA Data with REST](https://spring.io/guides/gs/accessing-data-rest/)
-* [Accessing Neo4j Data with REST](https://spring.io/guides/gs/accessing-neo4j-data-rest/)
-* [Accessing MongoDB Data with REST](https://spring.io/guides/gs/accessing-mongodb-data-rest/)
+---
 
-### Additional Links
-These additional references should also help you:
+## 3. Set Request Type and URL
+1. Set the request type to **POST** (or another HTTP method required by your API).
+2. Enter the request URL (e.g., `http://localhost:8080/admin/upload`).
 
-* [Gradle Build Scans – insights for your project's build](https://scans.gradle.com#gradle)
+---
 
+## 4. Go to the "Body" Tab
+1. Select the **"Body"** tab below the URL bar.
+2. Choose **form-data** as the request body type.
+
+---
+
+## 5. Add the File Field
+1. In the **key** field, enter the parameter name for the file (e.g., `file`). Ensure this matches the parameter name in your API code.
+2. Change the type from **Text** to **File** by clicking the dropdown next to the key field.
+3. Click **"Choose Files"** and select the file from your system.
+4.  The name of attribute will be the "file" as parameter expected.
+
+---
+
+## 6. Add Additional Parameters (If Required)
+- If your API requires additional form-data fields (e.g., `username`, `metadata`, etc.), add them as separate rows in the form-data section.
+
+---
+
+## 7. Set Headers (If Required)
+- Go to the **"Headers"** tab if your API requires specific headers (e.g., authentication tokens).
+- Add necessary headers such as:
+  Content-Type: multipart/form-data
+  Authorization: Bearer
+---
+
+## 8. Send the Request
+1. Click the **"Send"** button.
+2. Check the response from your API in the bottom section of Postman.
+
+---
+
+## Example for File Upload
+### API Endpoint
+`http://localhost:8080/admin/upload`
+
+### Request Body
+- **Key**: `file` (Type: File)
+- File: Select the file from your computer.
+
+---
+
+## Debugging Tips
+- Ensure the parameter name in Postman matches the one in your API code (e.g., `@RequestParam("file")` in Spring Boot).
+- If your API requires a specific header, add it in the **Headers** tab.
+- Check the API response for any error messages or status codes (e.g., 400 for Bad Request).
+
+---
+## Debugging Tips
+
+Uploading the file from console with curl:
+
+```
+curl -X POST http://localhost:8080/admin/upload \
+-H "Content-Type: multipart/form-data" \
+-F "file=@/Users/zion/Downloads/file.pdf" \
+-F "userId=12345" \
+-F "description=Lost and found items"
+```
