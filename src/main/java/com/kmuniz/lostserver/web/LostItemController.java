@@ -2,6 +2,7 @@ package com.kmuniz.lostserver.web;
 
 import com.kmuniz.lostserver.data.LostItemEntity;
 import com.kmuniz.lostserver.service.LostItemService;
+import com.kmuniz.lostserver.util.StaticContent;
 import com.kmuniz.lostserver.web.requestResponse.ClaimRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class LostItemController {
     public ResponseEntity<?> uploadLostItems(@RequestParam("file") MultipartFile file) {
         try {
             lostItemService.uploadLostItemsFromFile(file);
-            return ResponseEntity.ok("File processed and items uploaded");
+            return ResponseEntity.ok(StaticContent.htmlUploadedResponse);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
