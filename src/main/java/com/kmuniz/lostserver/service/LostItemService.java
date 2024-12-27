@@ -23,7 +23,11 @@ public class LostItemService {
 
     public void uploadLostItemsFromFile(MultipartFile file) throws IOException {
         List<LostItemEntity> items = PdfParser.parseLostItems(file);
-        lostItemRepository.saveAll(items);
+        List<LostItemEntity> savedItems =lostItemRepository.saveAll(items);
+        // Verify the number of saved items matches the number of parsed items
+        if (savedItems.size() != items.size()) {
+            throw new IllegalStateException("Not all items were saved successfully.");
+        }
     }
 
     public List<LostItemEntity> getAllLostItems() {

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claims List</title>
+</head>
+<body>
+<h1>Claims</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Claim ID</th>
+        <th>User ID</th>
+        <th>Item ID</th>
+        <th>Quantity Claimed</th>
+        <th>Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop through the claims list -->
+    <tr th:each="claim : ${claims}">
+        <td th:text="${claim.id}"></td>
+        <td th:text="${claim.userId}"></td>
+        <td th:text="${claim.itemId}"></td>
+        <td th:text="${claim.quantityClaimed}"></td>
+        <td th:text="${claim.date}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

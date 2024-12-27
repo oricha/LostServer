@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost Items</title>
+    <style>
+        /* Header styles */
+        .header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+        }
+
+        /* Kebab menu container */
+        .kebab-menu {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        /* Dots for the kebab icon */
+        .kebab-icon {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .kebab-icon span {
+            width: 6px;
+            height: 6px;
+            background-color: white;
+            border-radius: 50%;
+        }
+
+        /* Dropdown menu */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 30px;
+            left: 0;
+            background-color: white;
+            color: black;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: black;
+            font-size: 14px;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #ddd;
+        }
+
+        /* Show the dropdown when the menu is active */
+        .kebab-menu:hover .dropdown-menu {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <!-- Kebab menu -->
+    <div class="kebab-menu">
+        <div class="kebab-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <!-- Dropdown options -->
+        <div class="dropdown-menu">
+            <a href="/">Upload</a>
+            <a href="/items">Items</a>
+            <a href="/claim">Claim</a>
+        </div>
+    </div>
+</div>
+<h1>Lost Items</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Item Name</th>
+        <th>Quantity</th>
+        <th>Place</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop through the items list -->
+    <tr th:each="item : ${items}">
+        <td th:text="${item.id}"></td>
+        <td th:text="${item.itemName}"></td>
+        <td th:text="${item.quantity}"></td>
+        <td th:text="${item.place}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
