@@ -1,7 +1,5 @@
 package com.kmuniz.lostserver.web;
 
-import com.kmuniz.lostserver.data.Claim;
-import com.kmuniz.lostserver.data.LostItemEntity;
 import com.kmuniz.lostserver.service.LostItemService;
 import com.kmuniz.lostserver.util.StaticContent;
 import com.kmuniz.lostserver.web.requestResponse.ClaimRequest;
@@ -36,6 +34,12 @@ public class LostItemController {
     public String getLostItems(Model model) {
         model.addAttribute("items", lostItemService.getAllLostItems());
         return "items-page";
+    }
+
+    @GetMapping("/items/{id}")
+    public String getItemById(@PathVariable Long id, Model model) {
+        model.addAttribute("item", lostItemService.getLostItemById(id));
+        return "item-details";
     }
 
     @PostMapping("/claim")

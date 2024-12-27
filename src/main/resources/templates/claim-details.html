@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Claim Item</title>
+</head>
+<body>
+<h1>Claim Item</h1>
+<table border="1">
+    <tr>
+        <th>Item ID</th>
+        <td th:text="${claim.id}"></td>
+    </tr>
+    <tr>
+        <th>Item Name</th>
+        <td th:text="${claim.itemName}"></td>
+    </tr>
+    <tr>
+        <th>Quantity</th>
+        <td th:text="${claim.quantity}"></td>
+    </tr>
+    <tr>
+        <th>Place</th>
+        <td th:text="${claim.place}"></td>
+    </tr>
+</table>
+
+<!-- Form to process the claim -->
+<form th:action="@{/claims/{id}/claim(id=${claim.id})}" method="post">
+    <button type="submit">Claim Item</button>
+</form>
+
+<!-- Link to go back to the list -->
+<p><a href="/items">Back to Items List</a></p>
+</body>
+</html>

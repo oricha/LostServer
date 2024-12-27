@@ -15,4 +15,5 @@ public class Claim {
     private Long userId;
     private Long lostItemId;
     private int quantityClaimed;
+    private String status;
 }

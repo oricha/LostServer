@@ -100,7 +100,10 @@
     <tbody>
     <!-- Loop through the items list -->
     <tr th:each="item : ${items}">
-        <td th:text="${item.id}"></td>
+        <td>
+            <!-- Link to the claim page -->
+            <a th:href="@{/items/{id}(id=${item.id})}" th:text="${item.id}"></a>
+        </td>
         <td th:text="${item.itemName}"></td>
         <td th:text="${item.quantity}"></td>
         <td th:text="${item.place}"></td>
