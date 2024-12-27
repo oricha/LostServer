@@ -1,0 +1,124 @@
+openapi: 3.0.1
+info:
+  title: Lost & Found API
+  description: A RESTful API for managing lost and found items.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api
+    description: Local development server
+paths:
+  /admin/upload:
+    post:
+      summary: Upload a PDF file containing lost items
+      description: Admin can upload a PDF file with lost item details. The details will be parsed and stored in the database.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: PDF file containing lost items
+      responses:
+        '200':
+          description: File processed and items uploaded
+        '500':
+          description: Internal server error
+      tags:
+        - Admin
+
+  /items:
+    get:
+      summary: Get all lost items
+      description: Retrieve a list of all lost items stored in the system.
+      responses:
+        '200':
+          description: A list of lost items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    itemName:
+                      type: string
+                      example: Laptop
+                    quantity:
+                      type: integer
+                      example: 1
+                    place:
+                      type: string
+                      example: Taxi
+        '500':
+          description: Internal server error
+      tags:
+        - User
+
+  /claim:
+    post:
+      summary: Claim a lost item
+      description: Users can claim a specific lost item by providing their user ID and the item ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  example: 1001
+                lostItemId:
+                  type: integer
+                  example: 1
+                quantity:
+                  type: integer
+                  example: 1
+      responses:
+        '200':
+          description: Item claimed successfully
+        '400':
+          description: Bad request
+      tags:
+        - User
+
+  /admin/claims:
+    get:
+      summary: Get claimed lost items
+      description: Retrieve a list of all claims along with associated user details.
+      responses:
+        '200':
+          description: A list of claims with user details
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    lostItemId:
+                      type: integer
+                      example: 1
+                    itemName:
+                      type: string
+                      example: Laptop
+                    userId:
+                      type: integer
+                      example: 1001
+                    userName:
+                      type: string
+                      example: John Doe
+                    quantityClaimed:
+                      type: integer
+                      example: 1
+        '500':
+          description: Internal server error
+      tags:
+        - Admin
