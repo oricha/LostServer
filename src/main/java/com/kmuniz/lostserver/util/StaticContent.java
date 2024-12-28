@@ -10,7 +10,7 @@ public class StaticContent {
                     <a href="/items">View Items</a>
                 </p>
                 <p>
-                    <a href="/claim">Claim an Item</a>
+                    <a href="/claim">View Claims</a>
                 </p>
             </body>
             </html>

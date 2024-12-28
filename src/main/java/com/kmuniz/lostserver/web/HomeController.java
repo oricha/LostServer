@@ -9,4 +9,9 @@ public class HomeController {
     public String uploadPage() {
         return "redirect:/upload.html";
     }
+
+    @GetMapping("/users")
+    public String listUsers() {
+        return "redirect:/users-page.html";
+    }
 }

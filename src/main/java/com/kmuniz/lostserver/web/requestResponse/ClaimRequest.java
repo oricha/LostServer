@@ -7,5 +7,5 @@ public class ClaimRequest {
 
     private Long userId;
     private Long lostItemId;
-    private int quantityClaimed;
+    private int quantityClaimed = 1;
 }

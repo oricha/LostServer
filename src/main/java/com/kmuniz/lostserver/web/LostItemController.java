@@ -41,12 +41,6 @@ public class LostItemController {
         return "item-details";
     }
 
-    @PostMapping("/claim")
-    public ResponseEntity<?> claimLostItem(@RequestBody ClaimRequest claimRequest) {
-        lostItemService.claimLostItem(claimRequest.getUserId(), claimRequest.getLostItemId(), claimRequest.getQuantityClaimed());
-        return ResponseEntity.ok("Item claimed successfully");
-    }
-
     @GetMapping("/admin/claims")
     public String getClaimedLostItems(Model model) {
         model.addAttribute(lostItemService.getClaimedLostItems());

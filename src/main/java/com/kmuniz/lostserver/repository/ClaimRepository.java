@@ -10,6 +10,6 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
 
     List<Claim> findByUserId(Long userId);
 
-    @Query("SELECT c.lostItemId, c.quantityClaimed, l.itemName, l.place FROM Claim c JOIN LostItemEntity l ON c.lostItemId = l.id")
+    @Query("SELECT c, li FROM Claim c JOIN LostItemEntity li ON c.lostItemId = li.id")
     List<Object[]> findClaimsWithUserDetails();
 }

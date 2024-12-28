@@ -7,15 +7,14 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "claim")
-public class Claim {
+@Table(name = "users")
+public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
-    private Long lostItemId;
-    private int quantityClaimed;
-    private String status;
-    private String date;
+    private String name;
+
+    private String email;
 }

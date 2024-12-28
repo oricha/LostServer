@@ -18,27 +18,32 @@ public class ClaimService {
     @Autowired
     private LostItemRepository lostItemRepository;
 
-
     public Claim getClaimById(Long id) {
         return claimRepository.findById(id).orElse(null);
     }
 
-    public List<Claim> getAllClaims() {
-        return claimRepository.findAll();
-    }
-
-
-    public void claimItem(Long id) {
-        LostItemEntity item = lostItemRepository.findById(id)
+    public void claimItem(Long userId, Long lostItemId, int quantity) {
+        LostItemEntity item = lostItemRepository.findById(lostItemId)
                 .orElseThrow(() -> new IllegalArgumentException("Item not found"));
 
         // Check if there are enough items to claim
-        if (item.getQuantity() <= 0) {
-            throw new IllegalStateException("There are not enough items to claim.");
+        if (item.getQuantity() < quantity) {
+            throw new IllegalStateException("Not enough items available to claim.");
         }
 
-        // Reduce the quantity
-        item.setQuantity(item.getQuantity() - 1);
+        // Reduce the available quantity of the lost item
+        item.setQuantity(item.getQuantity() - quantity);
         lostItemRepository.save(item);
+
+        // Save the claim
+        Claim claim = new Claim();
+        claim.setUserId(userId);
+        claim.setLostItemId(lostItemId);
+        claim.setQuantityClaimed(quantity);
+        claimRepository.save(claim);
+    }
+
+    public List<Claim> getAllClaims() {
+        return claimRepository.findAll();
     }
 }

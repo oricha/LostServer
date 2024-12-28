@@ -34,14 +34,6 @@ public class LostItemService {
         return lostItemRepository.findAll();
     }
 
-    public void claimLostItem(Long userId, Long lostItemId, int quantity) {
-        Claim claim = new Claim();
-        claim.setUserId(userId);
-        claim.setLostItemId(lostItemId);
-        claim.setQuantityClaimed(quantity);
-        claimRepository.save(claim);
-    }
-
     public List<Object[]> getClaimedLostItems() {
         return claimRepository.findClaimsWithUserDetails();
     }
