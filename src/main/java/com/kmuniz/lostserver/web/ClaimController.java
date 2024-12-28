@@ -2,15 +2,10 @@ package com.kmuniz.lostserver.web;
 
 import com.kmuniz.lostserver.data.Claim;
 import com.kmuniz.lostserver.service.ClaimService;
-import com.kmuniz.lostserver.web.requestResponse.ClaimRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class ClaimController {
@@ -28,10 +23,14 @@ public class ClaimController {
 
     // Endpoint to process a claim
     @PostMapping("/claims/{lostItemId}/claim")
-    public String claimItem(@PathVariable Long lostItemId, @RequestBody ClaimRequest claimRequest, Model model) {
+    public String claimLostItem(
+            @RequestParam Long userId,
+            @PathVariable Long lostItemId, // Use @PathVariable for URL-based ID
+            @RequestParam int quantityClaimed,
+            Model model) {
 
         try {
-            claimService.claimItem(claimRequest.getUserId(), lostItemId, claimRequest.getQuantityClaimed());
+            claimService.claimItem(userId, lostItemId, quantityClaimed);
             model.addAttribute("message", "Item claimed successfully!");
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
