@@ -19,14 +19,20 @@ public class UserDataLoader {
         if (userRepository.count() == 0) {
             User user1 = new User();
             user1.setName("Alice");
+            user1.setUsername("1");
+            user1.setPassword("1");
             user1.setEmail("alice@example.com");
 
             User user2 = new User();
             user2.setName("Bob");
+            user2.setUsername("2");
+            user2.setPassword("2");
             user2.setEmail("bob@example.com");
 
             User user3 = new User();
             user3.setName("Admin");
+            user3.setUsername("admin");
+            user3.setPassword("admin");
             user3.setEmail("admin@admin.com");
 
             userRepository.save(user1);
