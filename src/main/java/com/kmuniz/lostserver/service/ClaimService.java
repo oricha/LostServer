@@ -7,6 +7,8 @@ import com.kmuniz.lostserver.repository.LostItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -40,6 +42,7 @@ public class ClaimService {
         claim.setUserId(userId);
         claim.setLostItemId(lostItemId);
         claim.setQuantityClaimed(quantity);
+        claim.setDate(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         claimRepository.save(claim);
     }
 

@@ -4,8 +4,6 @@ import com.kmuniz.lostserver.data.User;
 import com.kmuniz.lostserver.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,25 +31,30 @@ public class LoginController {
             @RequestParam String password,
             HttpSession session,
             RedirectAttributes redirectAttributes) {
+        // Find the user by username
         Optional<User> userOptional = userRepository.findByUsername(username);
 
         if (userOptional.isEmpty()) {
+            // If user is not found, add an error message and redirect to login page
             redirectAttributes.addFlashAttribute("error", "Invalid username or password");
             return "redirect:/login";
         }
+
         User user = userOptional.get();
 
-        // Check if the provided password matches the stored password
-        if (!new BCryptPasswordEncoder().matches(password, user.getPassword())) {
+        // Check if the provided password matches the stored one
+        if (!password.equals(user.getPassword())) {
+            // If password doesn't match, add an error message and redirect to login page
             redirectAttributes.addFlashAttribute("error", "Invalid username or password");
             return "redirect:/login";
         }
 
-        // Set user details in the session
+        // Store user details in the session
         session.setAttribute("user", user);
 
-        if (user.getRole().equals("ADMIN")) {
-            return "redirect:/"; // Example admin upload file
+        // Redirect based on user role
+        if ("ADMIN".equals(user.getRole())) {
+            return "redirect:/admin"; // Example: admin page
         } else {
             return "redirect:/items"; // Redirect to items page for regular users
         }
@@ -64,19 +67,27 @@ public class LoginController {
 
     @PostMapping("/register")
     public String register(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        // Save the plain text password directly (NOT RECOMMENDED)
+        user.setPassword(user.getPassword());
         userRepository.save(user);
+
         redirectAttributes.addFlashAttribute("message", "Registration successful! Please login.");
         return "redirect:/login";
     }
 
     @GetMapping("/profile")
-    public String getUserProfile(Model model) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+    public String getUserProfile(Model model, HttpSession session) {
+        // Retrieve the user from the session
+        User user = (User) session.getAttribute("user");
 
+        // If user is not found in the session, throw an exception
+        if (user == null) {
+            throw new IllegalArgumentException("User not found in session");
+        }
+
+        // Add the user details to the model for the view
         model.addAttribute("user", user);
-        return "profile"; // Return profile.html
+        return "profile"; // Return the profile view
     }
+
 }

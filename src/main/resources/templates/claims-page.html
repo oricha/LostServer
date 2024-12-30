@@ -22,11 +22,12 @@
     <tr th:each="claim : ${claims}">
         <td th:text="${claim.id}"></td>
         <td th:text="${claim.userId}"></td>
-        <td th:text="${claim.itemId}"></td>
+        <td th:text="${claim.lostItemId}"></td>
         <td th:text="${claim.quantityClaimed}"></td>
         <td th:text="${claim.date}"></td>
     </tr>
     </tbody>
 </table>
+<p><a href="/items">Back to Items List</a></p>
 </body>
 </html>
