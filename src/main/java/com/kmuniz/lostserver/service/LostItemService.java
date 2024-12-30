@@ -61,10 +61,6 @@ public class LostItemService {
         return lostItemRepository.findAll();
     }
 
-    public List<Object[]> getClaimedLostItems() {
-        return claimRepository.findClaimsWithUserDetails();
-    }
-
     public Object getLostItemById(Long id) {
         return lostItemRepository.findById(id).orElse(null);
     }

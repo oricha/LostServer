@@ -40,10 +40,4 @@ public class LostItemController {
         model.addAttribute("item", lostItemService.getLostItemById(id));
         return "item-details";
     }
-
-    @GetMapping("/admin/claims")
-    public String getClaimedLostItems(Model model) {
-        model.addAttribute(lostItemService.getClaimedLostItems());
-        return "claims-page";
-    }
 }

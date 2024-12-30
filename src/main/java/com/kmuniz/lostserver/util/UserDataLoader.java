@@ -5,9 +5,11 @@ import com.kmuniz.lostserver.data.User;
 import com.kmuniz.lostserver.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 /**
  * UserDataLoader is responsible for preloading default user data into the database
@@ -24,21 +26,61 @@ import java.util.Arrays;
  */
 @Component
 public class UserDataLoader {
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private UserFactory userFactory;
 
+    // Logger instance to log information and errors
+    private static final Logger logger = Logger.getLogger(UserDataLoader.class.getName());
+
+    private final UserRepository userRepository;
+    private final UserFactory userFactory;
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    // Constructor-based injection
+    @Autowired
+    public UserDataLoader(UserRepository userRepository, UserFactory userFactory, BCryptPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.userFactory = userFactory;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    /**
+     * Preloads default users if the user repository is empty.
+     */
     @PostConstruct
     public void preloadUsers() {
-        if (userRepository.count() == 0) {
-            User user1 = userFactory.createUser("Alice", "1001", "1", "alice@example.com", "user");
-            User user2 = userFactory.createUser("Bob", "1002", "2", "bob@example.com", "user");
-            User user3 = userFactory.createUser("Admin", "admin", "admin", "admin@admin.com", "admin");
+        try {
+            // Check if the repository is empty
+            if (userRepository.count() == 0) {
+                // Create default users with hashed passwords
+                User user1 = createUser("Alice", "1001", "1", "alice@example.com", "user");
+                User user2 = createUser("Bob", "1002", "2", "bob@example.com", "user");
+                User user3 = createUser("Admin", "admin", "admin", "admin@admin.com", "admin");
 
-            userRepository.saveAll(Arrays.asList(user1, user2, user3));
-            System.out.println("Preloaded users into the database");
+                // Save the users to the repository
+                userRepository.saveAll(Arrays.asList(user1, user2, user3));
+                logger.info("Preloaded users into the database");
+            }
+        } catch (Exception e) {
+            // Log any errors that occur during the preload process
+            logger.severe("Error preloading users: " + e.getMessage());
         }
+    }
+
+    /**
+     * Creates a user with a hashed password.
+     *
+     * @param name     The name of the user
+     * @param username The username of the user
+     * @param password The password to hash and set for the user
+     * @param email    The email of the user
+     * @param role     The role of the user (e.g., 'user', 'admin')
+     * @return A new User object
+     */
+    private User createUser(String name, String username, String password, String email, String role) {
+        // Hash the password before saving
+        String hashedPassword = passwordEncoder.encode(password);
+
+        // Create and return a new user with hashed password
+        return userFactory.createUser(name, username, hashedPassword, email, role);
     }
 }

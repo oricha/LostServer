@@ -9,8 +9,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The PdfParser class implements the FileParser interface and provides the
+ * functionality to parse PDF files to extract lost item details. It uses Apache PDFBox
+ * to load and process the PDF document and extract text data.
+ */
 public class PdfParser implements FileParser {
 
+    /**
+     * Parses the provided PDF file and extracts a list of lost items from it.
+     *
+     * @param file the PDF file containing the lost item data
+     * @return a list of LostItemEntity objects representing the lost items
+     * @throws IOException if there is an error while reading or processing the PDF file
+     */
     @Override
     public List<LostItemEntity> parse(MultipartFile file) throws IOException {
         List<LostItemEntity> items = new ArrayList<>();

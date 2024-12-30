@@ -49,4 +49,8 @@ public class ClaimService {
     public List<Claim> getAllClaims() {
         return claimRepository.findAll();
     }
+
+    public List<Object[]> getClaimedLostItems() {
+        return claimRepository.findClaimsWithUserDetails();
+    }
 }
