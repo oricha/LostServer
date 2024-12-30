@@ -19,6 +19,12 @@ public class LostItemController {
     @Autowired
     private LostItemService lostItemService;
 
+    @GetMapping("/")
+    public String homePage(Model model) {
+        model.addAttribute("items", lostItemService.getAllLostItems());
+        return "items-page";
+    }
+
     @PostMapping("/admin/upload")
     public ResponseEntity<?> uploadLostItems(@RequestParam("file") MultipartFile file) {
         try {
@@ -27,6 +33,11 @@ public class LostItemController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
+    }
+
+    @GetMapping("/admin/upload")
+    public String uploadLostItemsPage() {
+        return "redirect:/upload.html";
     }
 
     @GetMapping("/items")

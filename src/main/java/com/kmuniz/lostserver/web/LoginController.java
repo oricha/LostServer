@@ -87,6 +87,6 @@ public class LoginController {
 
         // Add the user details to the model for the view
         model.addAttribute("user", user);
-        return "profile"; // Return the profile view
+        return "users"; // Return the profile view
     }
 }

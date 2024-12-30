@@ -14,9 +14,6 @@ public class StaticContent {
                 <p>
                     <a href="/claim">View Claims</a>
                 </p>
-                <p>
-                    <a href="/users">User Profile</a>
-                </p>
             </body>
             </html>
             """;

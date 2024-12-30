@@ -35,17 +35,15 @@
     </style>
 </head>
 <body>
-
-<div class="container">
-    <h1>Error</h1>
-    <div class="alert alert-danger">
-        <strong>Oops!</strong> Something went wrong. <br>
-        <p th:text="${error}">An unexpected error occurred.</p>
-    </div>
-    <p>If the problem persists, please contact support or try again later.</p>
-    <a href="/" class="btn btn-primary">Back to Home</a>
+<div th:if="${error}">
+    <h2>Error</h2>
+    <p th:text="${error}"></p> <!-- This displays the error message -->
 </div>
-
+<div th:if="${message}">
+    <h2>Success</h2>
+    <p th:text="${message}"></p> <!-- This displays the success message -->
+</div>
+<a href="/items">Back to Items</a> <!-- Link to go back to the items page -->
 <!-- Optionally, add Bootstrap JS if needed -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </body>
