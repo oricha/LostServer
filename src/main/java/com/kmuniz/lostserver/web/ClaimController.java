@@ -13,6 +13,12 @@ public class ClaimController {
     @Autowired
     private ClaimService claimService;
 
+    @GetMapping("/claims")
+    public String getClaims(Model model) {
+        model.addAttribute("claims", claimService.getAllClaims());
+        return "claims-page";
+    }
+
     // Get claim by ID
     @GetMapping("/claims/{id}")
     public String getClaimById(@PathVariable Long id, Model model) {
@@ -38,10 +44,5 @@ public class ClaimController {
             model.addAttribute("error", e.getMessage());
         }
         return "redirect:/items";
-    }
-    @GetMapping("/claims")
-    public String getClaims(Model model) {
-        model.addAttribute("claims", claimService.getAllClaims());
-        return "claims-page";
     }
 }
