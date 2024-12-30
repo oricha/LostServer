@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import static com.kmuniz.lostserver.util.StaticContent.PDF_TYPE;
+
 
 @Controller
 public class LostItemController {
@@ -20,7 +22,7 @@ public class LostItemController {
     @PostMapping("/admin/upload")
     public ResponseEntity<?> uploadLostItems(@RequestParam("file") MultipartFile file) {
         try {
-            lostItemService.uploadLostItemsFromFile(file);
+            lostItemService.uploadLostItemsFromFile(file, PDF_TYPE);
             return ResponseEntity.ok(StaticContent.htmlUploadedResponse);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

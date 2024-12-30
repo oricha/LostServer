@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface ClaimRepository extends JpaRepository<Claim, Long> {
 
-    List<Claim> findByUserId(Long userId);
-
     @Query("SELECT c, li FROM Claim c JOIN LostItemEntity li ON c.lostItemId = li.id")
     List<Object[]> findClaimsWithUserDetails();
 }

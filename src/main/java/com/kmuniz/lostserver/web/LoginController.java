@@ -89,5 +89,4 @@ public class LoginController {
         model.addAttribute("user", user);
         return "profile"; // Return the profile view
     }
-
 }

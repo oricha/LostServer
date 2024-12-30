@@ -7,42 +7,37 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 
+/**
+ * UserDataLoader is responsible for preloading default user data into the database
+ * during the application startup phase.
+ *
+ * This class uses the Factory Pattern via the UserFactory to create user objects
+ * with predefined configurations. It ensures that the user creation logic is
+ * centralized and reusable, adhering to best practices in clean code and separation
+ * of concerns.
+ *
+ * The @Component annotation registers this class as a Spring-managed bean, and
+ * the @PostConstruct annotation ensures that the preloadUsers method is executed
+ * after the bean initialization.
+ */
 @Component
 public class UserDataLoader {
-
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserFactory userFactory;
+
     @PostConstruct
     public void preloadUsers() {
-
         if (userRepository.count() == 0) {
-            User user1 = new User();
-            user1.setName("Alice");
-            user1.setUsername("1001");
-            user1.setPassword("1");
-            user1.setEmail("alice@example.com");
-            user1.setRole("user");
+            User user1 = userFactory.createUser("Alice", "1001", "1", "alice@example.com", "user");
+            User user2 = userFactory.createUser("Bob", "1002", "2", "bob@example.com", "user");
+            User user3 = userFactory.createUser("Admin", "admin", "admin", "admin@admin.com", "admin");
 
-            User user2 = new User();
-            user2.setName("Bob");
-            user2.setUsername("1002");
-            user2.setPassword("2");
-            user2.setEmail("bob@example.com");
-            user2.setRole("user");
-
-            User user3 = new User();
-            user3.setName("Admin");
-            user3.setUsername("admin");
-            user3.setPassword("admin");
-            user3.setEmail("admin@admin.com");
-            user3.setRole("admin");
-
-            userRepository.save(user1);
-            userRepository.save(user2);
-            userRepository.save(user3);
-
+            userRepository.saveAll(Arrays.asList(user1, user2, user3));
             System.out.println("Preloaded users into the database");
         }
     }

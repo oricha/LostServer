@@ -2,6 +2,8 @@ package com.kmuniz.lostserver.util;
 
 public class StaticContent {
 
+    public static final String PDF_TYPE = "pdf";
+
     public static final String htmlUploadedResponse = """
             <html>
             <body>

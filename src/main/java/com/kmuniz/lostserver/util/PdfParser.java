@@ -9,13 +9,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PdfParser {
+public class PdfParser implements FileParser {
 
-    public static List<LostItemEntity> parseLostItems(MultipartFile file) throws IOException {
+    @Override
+    public List<LostItemEntity> parse(MultipartFile file) throws IOException {
         List<LostItemEntity> items = new ArrayList<>();
-        // do something with the PDF file here
 
-        // Use the Loader class to load the PDF document
+        // Load the PDF document
         try (PDDocument document = Loader.loadPDF(file.getInputStream().readAllBytes())) {
             // Extract text using PDFTextStripper
             String text = new PDFTextStripper().getText(document);
@@ -30,6 +30,7 @@ public class PdfParser {
                 items.add(item);
             }
         }
+
         return items;
     }
 }

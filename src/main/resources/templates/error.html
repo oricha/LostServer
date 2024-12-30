@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f8d7da;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            padding: 50px;
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        h1 {
+            color: #721c24;
+        }
+        .alert {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        .btn-primary {
+            background-color: #004085;
+            border-color: #003366;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Error</h1>
+    <div class="alert alert-danger">
+        <strong>Oops!</strong> Something went wrong. <br>
+        <p th:text="${error}">An unexpected error occurred.</p>
+    </div>
+    <p>If the problem persists, please contact support or try again later.</p>
+    <a href="/" class="btn btn-primary">Back to Home</a>
+</div>
+
+<!-- Optionally, add Bootstrap JS if needed -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
