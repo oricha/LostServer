@@ -1,16 +1,26 @@
-openapi: 3.0.1
+openapi: 3.0.0
 info:
   title: Lost & Found API
-  description: A RESTful API for managing lost and found items.
+  description: API for managing lost items, claims, and user authentication.
   version: 1.0.0
-servers:
-  - url: http://localhost:8080/api
-    description: Local development server
 paths:
+  /:
+    get:
+      summary: "Home page displaying all lost items."
+      operationId: "getHomePage"
+      responses:
+        '200':
+          description: "Home page with all lost items"
+          content:
+            text/html:
+              schema:
+                type: string
+                example: "<html><body>Items Page</body></html>"
+
   /admin/upload:
     post:
-      summary: Upload a PDF file containing lost items
-      description: Admin can upload a PDF file with lost item details. The details will be parsed and stored in the database.
+      summary: "Upload lost items from a file."
+      operationId: "uploadLostItems"
       requestBody:
         required: true
         content:
@@ -21,50 +31,141 @@ paths:
                 file:
                   type: string
                   format: binary
-                  description: PDF file containing lost items
+                  description: "The file containing lost items data."
       responses:
         '200':
-          description: File processed and items uploaded
+          description: "File uploaded successfully."
+          content:
+            text/html:
+              schema:
+                type: string
+                example: "<html><body>File uploaded successfully</body></html>"
         '500':
-          description: Internal server error
-      tags:
-        - Admin
-
-  /items:
-    get:
-      summary: Get all lost items
-      description: Retrieve a list of all lost items stored in the system.
-      responses:
-        '200':
-          description: A list of lost items
+          description: "Internal server error."
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                      example: 1
-                    itemName:
-                      type: string
-                      example: Laptop
-                    quantity:
-                      type: integer
-                      example: 1
-                    place:
-                      type: string
-                      example: Taxi
-        '500':
-          description: Internal server error
-      tags:
-        - User
+                type: string
+                example: "Error message"
 
-  /claim:
+  /admin/upload:
+    get:
+      summary: "Redirect to upload page."
+      operationId: "uploadLostItemsPage"
+      responses:
+        '302':
+          description: "Redirect to the upload page."
+          headers:
+            Location:
+              description: "Redirect URL"
+              schema:
+                type: string
+                example: "/upload.html"
+
+  /items:
+    get:
+      summary: "Retrieve all lost items."
+      operationId: "getLostItems"
+      responses:
+        '200':
+          description: "List of all lost items."
+          content:
+            text/html:
+              schema:
+                type: string
+                example: "<html><body>Items Page</body></html>"
+
+  /items/{id}:
+    get:
+      summary: "Retrieve details of a specific lost item by ID."
+      operationId: "getLostItemById"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: "ID of the lost item."
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: "Details of the lost item."
+          content:
+            text/html:
+              schema:
+                type: string
+                example: "<html><body>Item Details</body></html>"
+        '404':
+          description: "Item not found."
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Lost item not found."
+
+  /login:
+    get:
+      summary: "Display login page."
+      operationId: "getLoginPage"
+      responses:
+        '200':
+          description: "Login page."
+          content:
+            text/html:
+              schema:
+                type: string
+                example: "<html><body>Login Form</body></html>"
+
     post:
-      summary: Claim a lost item
-      description: Users can claim a specific lost item by providing their user ID and the item ID.
+      summary: "Authenticate user login."
+      operationId: "loginUser"
+      parameters:
+        - name: username
+          in: query
+          required: true
+          description: "User's username."
+          schema:
+            type: string
+            example: "user123"
+        - name: password
+          in: query
+          required: true
+          description: "User's password."
+          schema:
+            type: string
+            example: "password123"
+      responses:
+        '200':
+          description: "Login successful."
+          content:
+            text/html:
+              schema:
+                type: string
+                example: "<html><body>Welcome, user!</body></html>"
+        '400':
+          description: "Invalid username or password."
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Invalid username or password."
+
+  /register:
+    get:
+      summary: "Display the registration page."
+      operationId: "getRegisterPage"
+      responses:
+        '200':
+          description: "Registration page."
+          content:
+            text/html:
+              schema:
+                type: string
+                example: "<html><body>Register Form</body></html>"
+
+    post:
+      summary: "Register a new user."
+      operationId: "registerUser"
       requestBody:
         required: true
         content:
@@ -72,53 +173,100 @@ paths:
             schema:
               type: object
               properties:
-                userId:
-                  type: integer
-                  example: 1001
-                lostItemId:
-                  type: integer
-                  example: 1
-                quantity:
-                  type: integer
-                  example: 1
+                username:
+                  type: string
+                  example: "user123"
+                password:
+                  type: string
+                  example: "password123"
       responses:
         '200':
-          description: Item claimed successfully
-        '400':
-          description: Bad request
-      tags:
-        - User
+          description: "Registration successful."
+          content:
+            text/html:
+              schema:
+                type: string
+                example: "<html><body>Registration successful! Please login.</body></html>"
 
-  /admin/claims:
+  /claims/{id}:
     get:
-      summary: Get claimed lost items
-      description: Retrieve a list of all claims along with associated user details.
+      summary: "Retrieve claim details by ID."
+      operationId: "getClaimById"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: "ID of the claim."
+          schema:
+            type: integer
+            example: 1
       responses:
         '200':
-          description: A list of claims with user details
+          description: "Claim details."
+          content:
+            text/html:
+              schema:
+                type: string
+                example: "<html><body>Claim Details</body></html>"
+        '404':
+          description: "Claim not found."
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    lostItemId:
-                      type: integer
-                      example: 1
-                    itemName:
-                      type: string
-                      example: Laptop
-                    userId:
-                      type: integer
-                      example: 1001
-                    userName:
-                      type: string
-                      example: John Doe
-                    quantityClaimed:
-                      type: integer
-                      example: 1
-        '500':
-          description: Internal server error
-      tags:
-        - Admin
+                type: string
+                example: "Claim not found."
+
+  /claims/{lostItemId}/claim:
+    post:
+      summary: "Submit a claim for a lost item."
+      operationId: "claimLostItem"
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          description: "ID of the user claiming the item."
+          schema:
+            type: integer
+            example: 1
+        - name: lostItemId
+          in: path
+          required: true
+          description: "ID of the lost item being claimed."
+          schema:
+            type: integer
+            example: 1
+        - name: quantityClaimed
+          in: query
+          required: true
+          description: "Quantity of the lost item being claimed."
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: "Claim submitted successfully."
+          content:
+            text/html:
+              schema:
+                type: string
+                example: "<html><body>Claim successful</body></html>"
+        '400':
+          description: "Error processing claim."
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Error processing claim."
+
+  /claims:
+    get:
+      summary: "Retrieve all claims."
+      operationId: "getAllClaims"
+      responses:
+        '200':
+          description: "List of all claims."
+          content:
+            text/html:
+              schema:
+                type: string
+                example: "<html><body>Claims Page</body></html>"
