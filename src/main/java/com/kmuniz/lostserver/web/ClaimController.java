@@ -87,10 +87,4 @@ public class ClaimController {
             return "error"; // Redirect to an error page
         }
     }
-
-    @GetMapping("/admin/claims")
-    public String getClaimedLostItems(Model model) {
-        model.addAttribute(claimService.getClaimedLostItems());
-        return "claims-page";
-    }
 }

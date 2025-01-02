@@ -1,12 +1,10 @@
 package com.kmuniz.lostserver.service;
 
-import com.kmuniz.lostserver.data.Claim;
 import com.kmuniz.lostserver.data.LostItemEntity;
 import com.kmuniz.lostserver.repository.ClaimRepository;
 import com.kmuniz.lostserver.repository.LostItemRepository;
 import com.kmuniz.lostserver.util.FileParser;
 import com.kmuniz.lostserver.util.ParserFactory;
-import com.kmuniz.lostserver.util.PdfParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
