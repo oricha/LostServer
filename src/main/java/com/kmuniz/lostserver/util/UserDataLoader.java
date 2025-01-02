@@ -52,8 +52,8 @@ public class UserDataLoader {
             // Check if the repository is empty
             if (userRepository.count() == 0) {
                 // Create default users with hashed passwords
-                User user1 = createUser("Alice", "1001", "1", "alice@example.com", "user");
-                User user2 = createUser("Bob", "1002", "2", "bob@example.com", "user");
+                User user1 = createUser("Alice", "1001", "1001", "alice@example.com", "user");
+                User user2 = createUser("Bob", "1002", "1002", "bob@example.com", "user");
                 User user3 = createUser("Admin", "admin", "admin", "admin@admin.com", "admin");
 
                 // Save the users to the repository
