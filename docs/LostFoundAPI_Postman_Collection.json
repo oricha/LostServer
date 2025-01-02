@@ -1,0 +1,119 @@
+{
+    "info": {
+        "name": "Lost & Found API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": "Collection of requests for the Lost & Found API."
+    },
+    "item": [
+        {
+            "name": "Get Home Page",
+            "request": {
+                "method": "GET",
+                "url": "{{baseUrl}}/",
+                "description": "Fetch the home page displaying all lost items."
+            }
+        },
+        {
+            "name": "Upload Lost Items Page",
+            "request": {
+                "method": "GET",
+                "url": "{{baseUrl}}/admin/upload",
+                "description": "Redirect to the upload lost items HTML page."
+            }
+        },
+        {
+            "name": "Upload Lost Items",
+            "request": {
+                "method": "POST",
+                "url": "{{baseUrl}}/admin/upload",
+                "description": "Upload lost items from a file.",
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "file",
+                            "type": "file",
+                            "description": "The file to upload."
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Get All Lost Items",
+            "request": {
+                "method": "GET",
+                "url": "{{baseUrl}}/items",
+                "description": "Fetch all lost items."
+            }
+        },
+        {
+            "name": "Get Lost Item by ID",
+            "request": {
+                "method": "GET",
+                "url": "{{baseUrl}}/items/:id",
+                "description": "Fetch a lost item by its ID.",
+                "urlVariables": [
+                    {
+                        "key": "id",
+                        "value": "1",
+                        "description": "ID of the lost item."
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Get Claim by ID",
+            "request": {
+                "method": "GET",
+                "url": "{{baseUrl}}/claims/:id",
+                "description": "Fetch a claim by its ID.",
+                "urlVariables": [
+                    {
+                        "key": "id",
+                        "value": "1",
+                        "description": "ID of the claim."
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Claim Lost Item",
+            "request": {
+                "method": "POST",
+                "url": "{{baseUrl}}/claims/:lostItemId/claim",
+                "description": "Claim a lost item.",
+                "urlVariables": [
+                    {
+                        "key": "lostItemId",
+                        "value": "1",
+                        "description": "ID of the lost item."
+                    }
+                ],
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "userId",
+                            "value": "123",
+                            "description": "ID of the user."
+                        },
+                        {
+                            "key": "quantityClaimed",
+                            "value": "1",
+                            "description": "Quantity of the item to claim."
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Get All Claims",
+            "request": {
+                "method": "GET",
+                "url": "{{baseUrl}}/claims",
+                "description": "Fetch all claims."
+            }
+        }
+    ]
+}
