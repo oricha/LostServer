@@ -5,16 +5,10 @@
 
 ---
 
-## 2. Create a New Request
-1. Click **"New"** → **"Request"**.
-2. Name your request and save it in a collection if needed.
-
----
-
-## 3. Set Request Type and URL
-1. Set the request type to **POST** (or another HTTP method required by your API).
-2. Enter the request URL (e.g., `http://localhost:8080/admin/upload`).
-
+## 2. Import the Postman Collection
+1. Navigate to the **"Import"** option in Postman.
+2. Select the file located in the `/docs/LostFoundAPI_Postman_Collection.json` folder.
+3. Open the imported request and ensure all necessary parameters (e.g., file, headers) are properly configured.
 ---
 
 ## 4. Go to the "Body" Tab
@@ -26,8 +20,8 @@
 ## 5. Add the File Field
 1. In the **key** field, enter the parameter name for the file (e.g., `file`). Ensure this matches the parameter name in your API code.
 2. Change the type from **Text** to **File** by clicking the dropdown next to the key field.
-3. Click **"Choose Files"** and select the file from your system.
-4.  The name of attribute will be the "file" as parameter expected.
+3. Click **"Choose Files"** and select the file from your system `/docs/Lost_Found_API.pdf`.
+4. The name of attribute will be the "file" as parameter expected.
 
 ---
 
@@ -43,31 +37,14 @@
   Authorization: Bearer
 ---
 
-## 8. Send the Request
-1. Click the **"Send"** button.
-2. Check the response from your API in the bottom section of Postman.
-
----
-
-## Example for File Upload
+## Example for File Upload with curl
 ### API Endpoint
 `http://localhost:8080/admin/upload`
 
 ### Request Body
 - **Key**: `file` (Type: File)
 - File: Select the file from your computer.
-
----
-
-## Debugging Tips
-- Ensure the parameter name in Postman matches the one in your API code (e.g., `@RequestParam("file")` in Spring Boot).
-- If your API requires a specific header, add it in the **Headers** tab.
-- Check the API response for any error messages or status codes (e.g., 400 for Bad Request).
-
----
-## Debugging Tips
-
-Uploading the file from console with curl:
+  Uploading the file from console with curl:
 
 ```
 curl -X POST http://localhost:8080/admin/upload \
@@ -76,3 +53,4 @@ curl -X POST http://localhost:8080/admin/upload \
 -F "userId=12345" \
 -F "description=Lost and found items"
 ```
+---
