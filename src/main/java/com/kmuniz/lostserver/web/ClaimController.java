@@ -2,9 +2,9 @@ package com.kmuniz.lostserver.web;
 
 import com.kmuniz.lostserver.data.Claim;
 import com.kmuniz.lostserver.service.ClaimService;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
@@ -27,7 +27,7 @@ public class ClaimController {
      * @param model the model to pass data to the view
      * @return the name of the HTML template to display claim details
      */
-    @Secured("ROLE_USER")
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/{id}")
     public String getClaimById(@PathVariable Long id, Model model) {
         try {
@@ -51,7 +51,7 @@ public class ClaimController {
      * @param model          the model to pass data to the view
      * @return a redirect to the items page
      */
-    @Secured("ROLE_USER")
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/{lostItemId}/claim")
     public String claimLostItem(
             @RequestParam Long userId,
@@ -79,7 +79,7 @@ public class ClaimController {
      * @param model the model to pass data to the view
      * @return the name of the HTML template to display all claims
      */
-    @Secured("ROLE_USER")
+    @RolesAllowed("ROLE_ADMIN")
     @GetMapping
     public String getAllClaims(Model model) {
         try {
@@ -91,11 +91,5 @@ public class ClaimController {
             model.addAttribute("error", "Could not fetch claims.");
             return "error"; // Redirect to an error page
         }
-    }
-
-    @GetMapping("/admin/claims")
-    public String getClaimedLostItems(Model model) {
-        model.addAttribute(claimService.getClaimedLostItems());
-        return "claims-page";
     }
 }

@@ -35,6 +35,9 @@ public class UserDataLoader {
     private final UserFactory userFactory;
     private final BCryptPasswordEncoder passwordEncoder;
 
+    private final static String ROLE_USER = "USER";
+    private final static String ROLE_ADMIN = "ADMIN";
+
     // Constructor-based injection
     @Autowired
     public UserDataLoader(UserRepository userRepository, UserFactory userFactory, BCryptPasswordEncoder passwordEncoder) {
@@ -52,9 +55,9 @@ public class UserDataLoader {
             // Check if the repository is empty
             if (userRepository.count() == 0) {
                 // Create default users with hashed passwords
-                User user1 = createUser("Alice", "1001", "1001", "alice@example.com", "user");
-                User user2 = createUser("Bob", "1002", "1002", "bob@example.com", "user");
-                User user3 = createUser("Admin", "admin", "admin", "admin@admin.com", "admin");
+                User user1 = createUser("Alice", "1001", "1001", "alice@example.com", ROLE_USER);
+                User user2 = createUser("Bob", "1002", "1002", "bob@example.com", ROLE_USER);
+                User user3 = createUser("Admin", "admin", "admin", "admin@admin.com", ROLE_ADMIN);
 
                 // Save the users to the repository
                 userRepository.saveAll(Arrays.asList(user1, user2, user3));
@@ -67,7 +70,7 @@ public class UserDataLoader {
     }
 
     /**
-     * Creates a user with a hashed password.
+     * Creates a user with a hashed password. Used Factory pattern
      *
      * @param name     The name of the user
      * @param username The username of the user

@@ -4,6 +4,7 @@ import com.kmuniz.lostserver.service.LostItemService;
 import com.kmuniz.lostserver.util.StaticContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.http.HttpStatus;
@@ -17,15 +18,20 @@ import static com.kmuniz.lostserver.util.StaticContent.PDF_TYPE;
 @Controller
 public class LostItemController {
 
+    private final LostItemService lostItemService;
+
+    // Constructor-based dependency injection
     @Autowired
-    private LostItemService lostItemService;
+    public LostItemController(LostItemService lostItemService) {
+        this.lostItemService = lostItemService;
+    }
 
     @GetMapping("/")
     public String homePage(Model model) {
         model.addAttribute("items", lostItemService.getAllLostItems());
         return "items-page";
     }
-    @Secured("ROLE_ADMIN")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/upload")
     public ResponseEntity<?> uploadLostItems(@RequestParam("file") MultipartFile file) {
         try {
@@ -35,7 +41,7 @@ public class LostItemController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-    @Secured("ROLE_ADMIN")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/upload")
     public String uploadLostItemsPage() {
         return "redirect:/upload.html";
@@ -46,7 +52,7 @@ public class LostItemController {
         model.addAttribute("items", lostItemService.getAllLostItems());
         return "items-page";
     }
-    @Secured("ROLE_USER")
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/items/{id}")
     public String getItemById(@PathVariable Long id, Model model) {
         model.addAttribute("item", lostItemService.getLostItemById(id));
