@@ -4,6 +4,7 @@ import com.kmuniz.lostserver.data.Claim;
 import com.kmuniz.lostserver.service.ClaimService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
@@ -78,6 +79,7 @@ public class ClaimController {
      * @param model the model to pass data to the view
      * @return the name of the HTML template to display all claims
      */
+    @Secured("ROLE_USER")
     @GetMapping
     public String getAllClaims(Model model) {
         try {
@@ -90,7 +92,7 @@ public class ClaimController {
             return "error"; // Redirect to an error page
         }
     }
-    @Secured("ROLE_USER")
+
     @GetMapping("/admin/claims")
     public String getClaimedLostItems(Model model) {
         model.addAttribute(claimService.getClaimedLostItems());

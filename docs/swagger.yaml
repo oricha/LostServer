@@ -1,26 +1,30 @@
 openapi: 3.0.0
 info:
   title: Lost & Found API
-  description: API for managing lost items, claims, and user authentication.
+  description: API for managing lost items and claims in the Lost & Found system.
   version: 1.0.0
 paths:
   /:
     get:
-      summary: "Home page displaying all lost items."
-      operationId: "getHomePage"
+      summary: Get home page with all lost items
+      operationId: getHomePage
       responses:
         '200':
-          description: "Home page with all lost items"
-          content:
-            text/html:
-              schema:
-                type: string
-                example: "<html><body>Items Page</body></html>"
+          description: HTML page displaying all lost items
+        '500':
+          description: Internal server error
 
   /admin/upload:
+    get:
+      summary: Upload lost items page
+      operationId: getUploadPage
+      responses:
+        '302':
+          description: Redirect to upload HTML page
+
     post:
-      summary: "Upload lost items from a file."
-      operationId: "uploadLostItems"
+      summary: Upload lost items from a file
+      operationId: uploadLostItems
       requestBody:
         required: true
         content:
@@ -31,242 +35,117 @@ paths:
                 file:
                   type: string
                   format: binary
-                  description: "The file containing lost items data."
       responses:
         '200':
-          description: "File uploaded successfully."
-          content:
-            text/html:
-              schema:
-                type: string
-                example: "<html><body>File uploaded successfully</body></html>"
+          description: File uploaded successfully
         '500':
-          description: "Internal server error."
-          content:
-            application/json:
-              schema:
-                type: string
-                example: "Error message"
-
-  /admin/upload:
-    get:
-      summary: "Redirect to upload page."
-      operationId: "uploadLostItemsPage"
-      responses:
-        '302':
-          description: "Redirect to the upload page."
-          headers:
-            Location:
-              description: "Redirect URL"
-              schema:
-                type: string
-                example: "/upload.html"
+          description: Internal server error
 
   /items:
     get:
-      summary: "Retrieve all lost items."
-      operationId: "getLostItems"
+      summary: Get all lost items
+      operationId: getAllLostItems
       responses:
         '200':
-          description: "List of all lost items."
-          content:
-            text/html:
-              schema:
-                type: string
-                example: "<html><body>Items Page</body></html>"
+          description: HTML page displaying all lost items
+        '500':
+          description: Internal server error
 
   /items/{id}:
     get:
-      summary: "Retrieve details of a specific lost item by ID."
-      operationId: "getLostItemById"
+      summary: Get lost item by ID
+      operationId: getLostItemById
       parameters:
         - name: id
           in: path
           required: true
-          description: "ID of the lost item."
+          description: ID of the lost item
           schema:
             type: integer
-            example: 1
       responses:
         '200':
-          description: "Details of the lost item."
-          content:
-            text/html:
-              schema:
-                type: string
-                example: "<html><body>Item Details</body></html>"
+          description: HTML page displaying the lost item's details
         '404':
-          description: "Item not found."
-          content:
-            application/json:
-              schema:
-                type: string
-                example: "Lost item not found."
-
-  /login:
-    get:
-      summary: "Display login page."
-      operationId: "getLoginPage"
-      responses:
-        '200':
-          description: "Login page."
-          content:
-            text/html:
-              schema:
-                type: string
-                example: "<html><body>Login Form</body></html>"
-
-    post:
-      summary: "Authenticate user login."
-      operationId: "loginUser"
-      parameters:
-        - name: username
-          in: query
-          required: true
-          description: "User's username."
-          schema:
-            type: string
-            example: "user123"
-        - name: password
-          in: query
-          required: true
-          description: "User's password."
-          schema:
-            type: string
-            example: "password123"
-      responses:
-        '200':
-          description: "Login successful."
-          content:
-            text/html:
-              schema:
-                type: string
-                example: "<html><body>Welcome, user!</body></html>"
-        '400':
-          description: "Invalid username or password."
-          content:
-            application/json:
-              schema:
-                type: string
-                example: "Invalid username or password."
-
-  /register:
-    get:
-      summary: "Display the registration page."
-      operationId: "getRegisterPage"
-      responses:
-        '200':
-          description: "Registration page."
-          content:
-            text/html:
-              schema:
-                type: string
-                example: "<html><body>Register Form</body></html>"
-
-    post:
-      summary: "Register a new user."
-      operationId: "registerUser"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                  example: "user123"
-                password:
-                  type: string
-                  example: "password123"
-      responses:
-        '200':
-          description: "Registration successful."
-          content:
-            text/html:
-              schema:
-                type: string
-                example: "<html><body>Registration successful! Please login.</body></html>"
+          description: Lost item not found
 
   /claims/{id}:
     get:
-      summary: "Retrieve claim details by ID."
-      operationId: "getClaimById"
+      summary: Get claim by ID
+      operationId: getClaimById
       parameters:
         - name: id
           in: path
           required: true
-          description: "ID of the claim."
+          description: ID of the claim
           schema:
             type: integer
-            example: 1
       responses:
         '200':
-          description: "Claim details."
-          content:
-            text/html:
-              schema:
-                type: string
-                example: "<html><body>Claim Details</body></html>"
+          description: HTML page displaying the claim's details
         '404':
-          description: "Claim not found."
-          content:
-            application/json:
-              schema:
-                type: string
-                example: "Claim not found."
+          description: Claim not found
 
   /claims/{lostItemId}/claim:
     post:
-      summary: "Submit a claim for a lost item."
-      operationId: "claimLostItem"
+      summary: Claim a lost item
+      operationId: claimLostItem
       parameters:
-        - name: userId
-          in: query
-          required: true
-          description: "ID of the user claiming the item."
-          schema:
-            type: integer
-            example: 1
         - name: lostItemId
           in: path
           required: true
-          description: "ID of the lost item being claimed."
+          description: ID of the lost item to claim
           schema:
             type: integer
-            example: 1
-        - name: quantityClaimed
-          in: query
-          required: true
-          description: "Quantity of the lost item being claimed."
-          schema:
-            type: integer
-            example: 1
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                quantityClaimed:
+                  type: integer
       responses:
-        '200':
-          description: "Claim submitted successfully."
-          content:
-            text/html:
-              schema:
-                type: string
-                example: "<html><body>Claim successful</body></html>"
+        '302':
+          description: Redirect to items page
         '400':
-          description: "Error processing claim."
-          content:
-            application/json:
-              schema:
-                type: string
-                example: "Error processing claim."
+          description: Invalid input
 
   /claims:
     get:
-      summary: "Retrieve all claims."
-      operationId: "getAllClaims"
+      summary: Get all claims
+      operationId: getAllClaims
       responses:
         '200':
-          description: "List of all claims."
-          content:
-            text/html:
-              schema:
-                type: string
-                example: "<html><body>Claims Page</body></html>"
+          description: HTML page displaying all claims
+        '500':
+          description: Internal server error
+components:
+  schemas:
+    LostItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        dateLost:
+          type: string
+          format: date
+    Claim:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        lostItemId:
+          type: integer
+        quantityClaimed:
+          type: integer
+        status:
+          type: string
